@@ -1,38 +1,53 @@
+# from typing import Optional
+
 import strawberry
 from fastapi import Depends, FastAPI
-from fastapi_sqlalchemy.middleware import DBSessionMiddleware
-from sqlalchemy_utils import database_exists
+
+# from starlette.background import BackgroundTasks
+# from starlette.requests import HTTPConnection, Request
+# from starlette.responses import Response
 from strawberry.fastapi import GraphQLRouter
-from strawberry_sqlalchemy_mapper import StrawberrySQLAlchemyMapper
 
-from sample_project.core.db import DB
-from sample_project.graphql import DataQuery
-from sample_project.models import Base
+from sample_project.core import settings
 
-if not database_exists(DB.engine.url):
-    Base.metadata.create_all(bind=DB.engine)
+# from sample_project.core.db import DB
+from sample_project.graphql import DataMutation, DataQuery
 
-
-def custom_context_dependency():
-    return DB.session
+# from strawberry.fastapi.context import CustomContext
+# from strawberry_sqlalchemy_mapper import StrawberrySQLAlchemyMapper
 
 
-async def get_context(custom_value=Depends(custom_context_dependency)):
-    return {"session": custom_value}
+# from fastapi_sqlalchemy import db
+# from fastapi_sqlalchemy.middleware import DBSessionMiddleware
 
 
-strawberry_sqlalchemy_mapper = StrawberrySQLAlchemyMapper()
-strawberry_sqlalchemy_mapper.finalize()
+def custom_context_dependency() -> str:
+    return "John"
 
 
-app = FastAPI()
+async def get_context(
+    custom_value=Depends(custom_context_dependency),
+):
+    return {
+        "custom_value": custom_value,
+    }
 
 
-app.add_middleware(DBSessionMiddleware, custom_engine=DB.engine)
+# strawberry_sqlalchemy_mapper = StrawberrySQLAlchemyMapper()
+# strawberry_sqlalchemy_mapper.finalize()
 
 
-schema = strawberry.Schema(query=DataQuery)
-graphql_app = GraphQLRouter(schema, context_getter=get_context)
+app = FastAPI(title=settings.PROJECT_NAME)
+
+
+# app.add_middleware(DBSessionMiddleware, db_url=DB().engine.url)
+
+
+schema = strawberry.Schema(query=DataQuery, mutation=DataMutation)
+graphql_app = GraphQLRouter(
+    schema=schema,
+    context_getter=get_context,
+)
 
 
 app.include_router(graphql_app, prefix="/graphql")

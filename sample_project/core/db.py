@@ -15,3 +15,6 @@ class DB:
             autocommit=False, autoflush=False, bind=self.engine
         )
         return session_maker()
+
+
+db_obj = DB()

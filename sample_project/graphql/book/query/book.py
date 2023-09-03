@@ -1,9 +1,11 @@
 import typing
 
 import strawberry
+
+# from fastapi_sqlalchemy import db
 from strawberry.types import Info
 
-from sample_project.core import db
+from sample_project.core import db_obj
 from sample_project.services import BookService
 
 from ..node import Book
@@ -13,4 +15,5 @@ from ..node import Book
 class BookQuery:
     @strawberry.field
     def books(self, info: Info) -> typing.List[Book]:
-        return BookService.get_books(info.context.get("session", db.session()))
+        bs = BookService(info.context.get("session", db_obj.session))
+        return bs.get_books()
