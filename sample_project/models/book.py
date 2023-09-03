@@ -4,5 +4,5 @@ from .base import Base
 
 
 class Book(Base):
-    title: str = Column(String, unique=True, nullable=False)
-    author: str = Column(String)
+    title: Column[str] = Column(String, unique=True, nullable=False)
+    author: Column[str] = Column(String)

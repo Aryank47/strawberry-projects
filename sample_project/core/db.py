@@ -7,6 +7,7 @@ from sample_project.core import settings
 class DB:
     @property
     def engine(self) -> Engine:
+        assert settings.SQLALCHEMY_DATABASE_URI
         return create_engine(settings.SQLALCHEMY_DATABASE_URI)
 
     @property

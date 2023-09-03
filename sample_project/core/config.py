@@ -9,10 +9,10 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "sample_project"
 
     # Database configuration
-    POSTGRES_SERVER: str
+    POSTGRES_SERVER: str = ""
     POSTGRES_PORT: Optional[int] = 5432
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
+    POSTGRES_USER: str = ""
+    POSTGRES_PASSWORD: str = ""
     POSTGRES_DB: str = ""
     SQLALCHEMY_DATABASE_URI: Optional[str] = None
 
@@ -22,18 +22,6 @@ class Settings(BaseSettings):
     ) -> Any:
         if isinstance(v, str):
             return v
-        # print(
-        #     "DB URL -->",
-        #     PostgresDsn.build(
-        #         scheme="postgresql",
-        #         hosts=None,
-        #         username=str(values.get("POSTGRES_USER")),
-        #         password=str(values.get("POSTGRES_PASSWORD")),
-        #         host=str(values.get("POSTGRES_SERVER")),
-        #         port=values.get("POSTGRES_PORT", 5432),
-        #         path=f"{values.get('POSTGRES_DB') or ''}",
-        #     ),
-        # )
         return str(
             PostgresDsn.build(
                 scheme="postgresql",

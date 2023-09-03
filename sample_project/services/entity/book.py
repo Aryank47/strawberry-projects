@@ -13,7 +13,7 @@ class BookService:
         return books
 
     def create_books(self, author: str, title: str):
-        new_book = Book(author=author, title=title)
+        new_book = Book(author=author, title=title)  # type:ignore
         self.session.add(new_book)
         self.session.commit()
         self.session.refresh(new_book)

@@ -1,7 +1,7 @@
 # from typing import Optional
 
 import strawberry
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, routing
 
 # from starlette.background import BackgroundTasks
 # from starlette.requests import HTTPConnection, Request
@@ -44,7 +44,7 @@ app = FastAPI(title=settings.PROJECT_NAME)
 
 
 schema = strawberry.Schema(query=DataQuery, mutation=DataMutation)
-graphql_app = GraphQLRouter(
+graphql_app: routing.APIRouter = GraphQLRouter(
     schema=schema,
     context_getter=get_context,
 )

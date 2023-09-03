@@ -11,7 +11,9 @@ def camel_case_split(word: str):
 
 @as_declarative()
 class Base:
-    id: Mapped[int] = Column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = Column(  # type:ignore
+        Integer, primary_key=True, index=True
+    )
 
     __name__: str
 
