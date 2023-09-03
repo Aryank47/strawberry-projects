@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "strawberry-project"
+version = "0.1.0"
+description = ""
+authors = ["Aryan Kumar <aryankumar@analytic-edge.com>"]
+readme = "README.md"
+packages = [{include = "strawberry_project"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+toml = "^0.10.2"
+strawberry-graphql = {extras = ["fastapi"], version = "^0.204.0"}
+psycopg2-binary = "^2.9.7"
+sqlalchemy = "^2.0.20"
+sqlalchemy-utils = "^0.41.1"
+fastapi-sqlalchemy = "^0.2.1"
+strawberry-sqlalchemy-mapper = "^0.1.1"
+pydantic-settings = "^2.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
