@@ -1,3 +1,5 @@
+from typing import cast
+
 import strawberry
 
 from sample_project.core import db_obj
@@ -12,4 +14,4 @@ class BookMutation:
     def add_book(self, title: str, author: str) -> Book:
         print(f"Adding {title} by {author}")
         bs = BookService(db_obj.session)
-        return bs.create_books(author=author, title=title)
+        return cast(Book, bs.create_books(author=author, title=title))

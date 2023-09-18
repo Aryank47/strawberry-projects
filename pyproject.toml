@@ -11,10 +11,11 @@ poethepoet = "^0.22.0"
 black = "^23.7.0"
 flake8 = "^6.1.0"
 mypy = "^1.5.1"
+pre-commit = "^3.4.0"
 
 [tool.poe.tasks]
 test = "coverage run -m pytest"
-sort = "isort --settings-path=pyproject.toml sample_project"
+sort = "isort --config=.sort.cfg sample_project"
 format = "black --config=pyproject.toml sample_project"
 lint = "flake8 --config=.flake8 sample_project"
 type-check = "mypy --config=pyproject.toml sample_project"
@@ -48,8 +49,21 @@ warn_unused_configs = true
 show_column_numbers = true
 pretty = true
 color_output = true
+plugins = ["sqlalchemy.ext.mypy.plugin", "pydantic.mypy"]
 
 
 [[tool.mypy.overrides]]
 module = ["strawberry_sqlalchemy_mapper.*"]
 ignore_missing_imports = true
+
+[tool.isort]
+profile = "black"
+line_length = 79
+multi_line_output = 3
+include_trailing_comma = true
+known_third_party = ["fastapi", "fastapi_sqlalchemy", "pydantic", "pydantic_settings", "sqlalchemy", "sqlalchemy_utils", "strawberry", "strawberry_sqlalchemy_mapper"]
+
+[tool.black]
+line-length = 79
+include = '.pyi?$'
+extend-exclude = """ .venv | .vscode | coverage | tests/test-data | alembic """

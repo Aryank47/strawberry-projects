@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, cast
 
 import strawberry
 
@@ -15,6 +15,6 @@ from ..node import Book
 class BookQuery:
     @strawberry.field
     def books(self, info: Info) -> List[Book]:
-        print(info.context)
+        print("context -- ", info.context)
         bs = BookService(info.context.get("session", None))
-        return bs.get_books()
+        return cast(List[Book], bs.get_books())
