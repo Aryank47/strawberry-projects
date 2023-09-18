@@ -13,7 +13,10 @@ class DB:
     @property
     def session(self) -> Session:
         session_maker = sessionmaker(
-            autocommit=False, autoflush=False, bind=self.engine
+            autocommit=False,
+            autoflush=False,
+            bind=self.engine,
+            expire_on_commit=True,
         )
         return session_maker()
 

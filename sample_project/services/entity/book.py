@@ -8,8 +8,8 @@ class BookService:
         self.session = session
 
     def get_books(self):
-        books = self.session.query(Book).all()
-        print(f"BOOKS FROM DB ---> {books}")
+        books = self.session.query(Book).order_by(Book.author).all()
+        # print(f"BOOKS FROM DB ---> {books}")
         return books
 
     def create_books(self, author: str, title: str):
