@@ -1,6 +1,5 @@
 import strawberry
-from fastapi import FastAPI
-from fastapi_sqlalchemy import db
+from fastapi import APIRouter, FastAPI
 from fastapi_sqlalchemy.middleware import DBSession
 from strawberry.extensions import Extension
 from strawberry.fastapi import GraphQLRouter
@@ -22,12 +21,12 @@ class SQLAlchemySession(Extension):
         self.execution_context.context["session"] = db_obj.session
 
     def on_request_end(self):
-        print("Bye Bye!!")
+        self.execution_context.context["session"].close()
 
 
 schema = strawberry.Schema(
     query=DataQuery, mutation=DataMutation, extensions=[SQLAlchemySession]
 )
 
-graphql_app = GraphQLRouter(schema=schema)
+graphql_app: APIRouter = GraphQLRouter(schema=schema)
 app.include_router(graphql_app, prefix="/graphql")
